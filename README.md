@@ -1,12 +1,22 @@
 <h2 align="center">Junit5 学习笔记</h2>
 
+因为个人理解可能不到位，所以某些内容会出现错误，请参考：
+
+junit5 官方文档：https://junit.org/junit5/docs/current/user-guide/
+
+maven-surefire-plugin 插件相关命令的文档：https://maven.apache.org/surefire/maven-surefire-plugin/
+
+maven-failsafe-plugin 插件相关命令的文档：https://maven.apache.org/surefire/maven-failsafe-plugin/index.html
+
 <p align="center">
 <img src="https://img.shields.io/badge/jdk-1.8-brightgreen" />
 <img src="https://img.shields.io/badge/junit--jupiter-5.9.2-brightgreen"/>
 </p>
 
+<hr>
 
-## 项目配置
+# 1. 初步了解
+## 1.1 项目配置
 创建 maven 项目，使用 maven 管理 selenium、junit5 等相关依赖和插件。
 
 maven 添加依赖和插件：
@@ -50,7 +60,7 @@ maven-surefire-plugin 用于执行单元测试。
 
 maven-failsafe-plugin 用于执行集成测试。
 
-## 编写第一个测试用例并执行
+## 1.2 编写第一个测试用例并执行
 
 在项目的 src 目录下有一个 test/java 目录，测试类要定义在此路径下。
 
@@ -66,18 +76,18 @@ public class TestDemo {
 执行命令：mvn test
 
 
-## 容器
+## 1.3 容器
 
 容器是测试树 `test tree` 中的一个节点 `node`，容器中包含其他容器或测试，例如测试类。
 
 通俗地，一个测试类就是一个容器，这个测试类中可以存在内部类，这个内部类也是一个容器，同时这个测试类中也有一些测试方法，这些测试方法就是测试类的子节点。
 
 
-## @Test
+## 1.4 @Test
 
 此注解将一个普通方法声明为测试方法。通俗地说，被 @Test 注解的方法就是一条测试用例。
 
-## 测试类
+## 1.5 测试类
 
 测试类就是上面说到的容器，测试类里面至少要包含一个测试方法。
 
@@ -87,7 +97,7 @@ public class TestDemo {
 
 测试类不需要使用 public 关键字修饰，但是也不能使用 private 关键字修饰。
 
-## 测试方法
+## 1.6 测试方法
 
 测试方法是使用 @Test、@RepeatedTest、@ParameterizedTest、@TestFactory 或 @TestTemplate 直接注释或元注释的任何实例方法。
 
@@ -97,15 +107,15 @@ public class TestDemo {
 
 使用 @TestFactory 注解的测试方法需要有返回值。
 
-测试方法不需要使用 public 关键字修饰，但是也不能使用 private 关键字修饰。
+测试方法不需要使用 public 关键字修饰，也不能使用 private 关键字修饰。
 
-## 生命周期方法
+## 1.7 生命周期方法
 
 使用@BeforeAll、@AfterAll、@BeforeEach 或 @AfterEach 直接注释或元注释的任何方法。
 
 生命周期方法不需要使用 public 关键字修饰，但是也不能使用 private 关键字修饰。
 
-## 测试类、测试方法、生命周期方法
+## 1.8 测试类、测试方法、生命周期方法
 
 定义的时候可以省略 public 关键字，当然写上也没问题。
 
@@ -147,8 +157,8 @@ class TestDemo {
 }
 ```
 
-
-## @DisplayName
+# 2. 显示名称
+## 2.1 @DisplayName
 
 ```@DisplayName(value = "显示名称")```
 
@@ -178,7 +188,7 @@ ide（此处用的是 idea ） 左下角显示：
 
 
 
-## 显示名称生成器
+## 2.2 显示名称生成器
 
 上面的显示名称注解 @DisplayName 支持自定义测试类和测试方法在 ide 中执行时显示的名称。
 
@@ -206,7 +216,7 @@ jupiter 中提供了几个默认的生成器，例如 Standard、Simple、Replac
 
 
 
-## Standard 生成器
+## 2.3 Standard 生成器
 Standard 生成器，其实是 DisplayNameGenerator 接口的实现类。
 
 Standard 类中实现了 DisplayNameGenerator 接口的 generateDisplayNameForClass 方法，
@@ -250,7 +260,7 @@ class TestDemo1 {
 可以看到测试类显示的名称是 TestDemo1，测试方法显示的名称是 testCase1(int)
 
 
-## Simple 生成器
+## 2.4 Simple 生成器
 
 它也是 DisplayNameGenerator 接口的实现类。
 
@@ -283,7 +293,7 @@ class TestDemo {
 而有参数的方法 testCase2(int no) 显示了参数类型。
 
 
-## ReplaceUnderscores 生成器
+## 2.5 ReplaceUnderscores 生成器
 它也是 DisplayNameGenerator 接口的实现类。
 
 使用它，会用空格替换测试类名或测试方法名中的下划线。
@@ -306,7 +316,7 @@ class Test_Demo {  // 创建一个名称有下划线的测试类
 可以看到，测试类显示的名称是 Test Demo，测试方法显示的名称是 test case。
 
 
-## IndicativeSentences 生成器
+## 2.6 IndicativeSentences 生成器
 
 对于 IndicativeSentences，可以使用 @IndicativeSentencesGeneration 这个注解来自定义分隔符和底层生成器。
 
@@ -336,7 +346,7 @@ class TestDemo {
 
 
 
-## 自定义显示名称生成器 —— 直接实现 DisplayNameGenerator 接口
+## 2.7 自定义显示名称生成器 —— 直接实现 DisplayNameGenerator 接口
 
 除了 junit5 默认提供的四种显示名称生成器，我们还可以自已定义。
 
@@ -397,7 +407,7 @@ class TestDemo {
 可以看到测试方法的名称和测试类的名称已经被中括号[]包裹显示了。
 
 
-## 自定义显示名称生成器 —— 继承 DisplayNameGenerator 接口的实现类
+## 2.8 自定义显示名称生成器 —— 继承 DisplayNameGenerator 接口的实现类
 
 这种方式是对 DisplayNameGenerator 接口的实现类进行拓展，也就是对上面说到的默认的四种生成器进行拓展。
 
@@ -453,7 +463,7 @@ class TestDemo {
 
 
 
-## 设置默认显示名称生成器
+## 2.9 设置默认显示名称生成器
 
 在整个项目级别上，设置默认显示名称生成器，设置以后，会在所有的测试类和测试方法中生效，不需要额外的在测试类中单独声明。
 
@@ -514,7 +524,7 @@ class Test_Demo2 {
 
 
 
-## 把自定义的生成器设置成默认生成器
+## 2.10 把自定义的生成器设置成默认生成器
 
 上面那个部分，我们是把 junit5 提供的生成器设置成全局默认的生成器，下面我们把自己定义的生成器设置成全局默认的生成器。
 
@@ -532,7 +542,7 @@ junit.jupiter.displayname.generator.default = study1.Emoji
 
 
 
-## 总结
+## 2.11 总结
 
 > 关于显示名称注解的优先级：我们上面说到了好几种显示名称注解，例如 @DisplayName、@DisplayNameGeneration，
 > 除了注解之外，还有设置全局的默认显示名称生成器，这些方式中，大体的优先级如下：
@@ -554,8 +564,7 @@ junit.jupiter.displayname.generator.default = study1.Emoji
 > `junit.jupiter.displayname.generator.default = 包名.类名`
 > 
 
-
-## 断言
+# 3. 断言
 
 junit5 的断言都是 org.junit.jupiter.api.Assertions 这个类中的静态方法。
 
@@ -586,7 +595,7 @@ junit5 的断言都是 org.junit.jupiter.api.Assertions 这个类中的静态方
 | fail |                   使测试失败                    |
 
 
-## executable 对象
+## 3.1 executable 对象
 
 上面有几个断言中提到了 executable 对象，Executable 是一个接口，一个函数式接口。
 
@@ -628,7 +637,7 @@ assertAll(() -> assertTrue(1 == 1));
 
 
 
-## assertAll
+## 3.2 assertAll
 
 assertAll 有多个重载方法。
 
@@ -671,7 +680,7 @@ class Demo {
 ```
 
 
-## assertEquals
+## 3.3 assertEquals
 
 assertEquals 断言两个对象是否相等，它的源码使用的是 Objct 类的 equals 方法去进行比较，
 因为Objct 类的 equals 方法等价于 == ，对于引用类型而言，比较的是地址值，如果想要比较引用类型数据的内容是否相等，就要重写 Object 类的 equals 方法。
@@ -740,7 +749,7 @@ public class Student {
 
 
 
-## assertNotEquals
+## 3.4 assertNotEquals
 
 断言两个对象是否不相等。
 
@@ -765,7 +774,7 @@ class Demo {
 ```
 
 
-## assertArrayEquals
+## 3.5 assertArrayEquals
 
 断言预期和实际的两个数组是否相等。
 
@@ -792,7 +801,7 @@ class Demo {
 ```
 
 
-## assertDoesNotThrow
+## 3.6 assertDoesNotThrow
 
 断言代码不会抛出任何异常。
 
@@ -814,7 +823,7 @@ class Demo {
 ```
 
 
-## assertInstanceOf
+## 3.7 assertInstanceOf
 
 断言对象属于某个类的实例或某个类的子类实例。
 
@@ -914,7 +923,7 @@ class Demo {
 ```
 
 
-## assertIterableEquals
+## 3.8 assertIterableEquals
 
 断言 Iterable 接口的实现类对象是否相等，两个对象中的元素数量和顺序必须相等，迭代时相同顺序对应的元素必须相等。
 
@@ -944,7 +953,7 @@ class Demo {
 ```
 
 
-## assertLinesMatch
+## 3.9 assertLinesMatch
 
 这个断言可以检查两个字符串集合中，相同顺序的字符串是否相等。
 
@@ -970,7 +979,7 @@ class Demo {
 }
 ```
 
-## assertNull
+## 3.10 assertNull
 
 断言对象是否为 null
 
@@ -992,7 +1001,7 @@ public class Demo {
 ```
 
 
-## assertNotNull
+## 3.11 assertNotNull
 
 断言是否不为 null
 
@@ -1014,7 +1023,7 @@ public class Demo {
 ```
 
 
-## assertSame 和 assertNotSame
+## 3.12 assertSame 和 assertNotSame
 
 assertSame 断言预期和实际的两个对象是否引用同一个对象，通过比较地址值来判断。
 
@@ -1042,7 +1051,7 @@ public class Demo {
 ```
 
 
-## assertThrows
+## 3.13 assertThrows
 
 断言 Executable 接口的实现类对象是否会抛出指定的异常。
 
@@ -1079,7 +1088,7 @@ public class Demo {
 }
 ```
 
-## assertThrowsExactly
+## 3.14 assertThrowsExactly
 
 断言 Executable 接口的实现类对象是否会抛出指定的异常。
 
@@ -1088,7 +1097,7 @@ public class Demo {
 在 junit5.8 之后可以使用这个断言方法，这个方法和 assertThrows 的区别暂时没有找到相关的资料。
 
 
-## assertTimeout
+## 3.15 assertTimeout
 
 断言 Executable 接口的实现类对象在给定的时间内是否会抛出指定的异常。
 
@@ -1127,7 +1136,7 @@ public class Demo {
 ```
 
 
-## assertTimeoutPreemptively
+## 3.16 assertTimeoutPreemptively
 
 和 assertTimeout 作用相同，但是它们的内部实现方式有区别。
 
@@ -1137,7 +1146,7 @@ assertTimeoutPreemptively 方法，一旦超时，那么就会立即停止执行
 
 
 
-## assertTrue 和 assertFalse
+## 3.17 assertTrue 和 assertFalse
 
 断言表达式结果是否为 true 或 false
 
@@ -1156,7 +1165,7 @@ public class Demo {
 }
 ```
 
-## fail
+## 3.18 fail
 
 fail 方法会直接让测试方法失败，并结束测试方法的执行。
 
@@ -1176,6 +1185,344 @@ public class Demo {
 
 
 
-##  第三方断言库
+##  3.19 第三方断言库
 
 如AssertJ、Hamcrest、Truth等
+
+
+# 4. 假设
+
+假设方法都是 `org.junit.jupiter.api.Assumptions` 类中的静态方法。
+
+假设有点类似于断言。
+
+junit 提供的假设方法有：
+
+| 方法 |                描述                |
+| :---: |:--------------------------------:|
+| abort() |               中止测试               |
+| abort(String message) |      中止测试，并返回指定的 message 内容      |
+| assumeFalse(boolean assumption) |         验证给定的假设表达式是否不成立          | 
+| assumeFalse(boolean assumption, String message) |   验证给定的假设表达式，并返回指定的 message 内容   |
+| assumeTrue(boolean assumption) |          验证给定的假设表达式是否成立          |
+| assumeTrue(boolean assumption, String message) | 验证给定的假设表达式是否成立，并返回指定的 message 内容 |
+| assumingThat(boolean assumption, Executable executable) | 当假设成立，则执行 Executable 函数式接口的实现对象  |
+
+
+## 4.1 abort()
+
+此方法可用于中止测试，代码示例：
+```
+@Test
+void test_case1() {
+    System.out.println("你好");
+    abort();
+    System.out.println("我将不会被执行");
+}
+```
+
+此方法会抛出 `TestAbortedException` 异常。
+
+
+## 4.2 abort(String message)
+
+此方法可用于中止测试，并且输出传给 message 参数的内容，代码示例：
+```
+@Test
+void test_case1() {
+    System.out.println("你好");
+    abort("中止执行");
+    System.out.println("我将不会被执行");
+}
+```
+idea 中运行之后，输出如下：
+[![p9ZPOk4.png](https://s1.ax1x.com/2023/04/22/p9ZPOk4.png)](https://imgse.com/i/p9ZPOk4)
+
+
+## 4.3 assumeFalse(boolean assumption) 和 assumeFalse(boolean assumption, String message)
+
+此方法用于验证给定的假设表达式是否不成立。
+
+如果假设不成立，则继续执行此方法之后的代码。
+
+如果假设成立，则不会执行后面的代码。
+
+通俗地说，assumeFalse 方法，就是验证某个表达式的返回值是不是 False。
+
+是 False，则继续执行后面的代码，不是 False，则中止执行所在的测试方法，但不会中止整个测试。
+
+
+类似 assertFalse。
+
+代码示例：
+```
+@Test
+void test_case1() {
+    System.out.println("你好1");
+    assumeFalse(1 > 2);  // 因为 1 > 2 结果是 False，所以 assumeFalse 假设成立，后面的 aaa 会输出
+    System.out.println("aaa");
+}
+
+@Test
+void test_case2() {
+    System.out.println("你好2");
+    assumeFalse(1 < 2, "假设不成立"); // 因为 1 < 2 结果是 True，所以 assumeFalse 假设不成立，后面的 aaa 不会输出
+    System.out.println("aaa");
+}
+```
+
+idea 中执行之后的结果：
+[![p9ZiTCd.png](https://s1.ax1x.com/2023/04/22/p9ZiTCd.png)](https://imgse.com/i/p9ZiTCd)
+
+
+## 4.4 assumeTrue(boolean assumption) 和 assumeTrue(boolean assumption, String message)
+
+此方法用于验证给定的表达式是否成立。类似 assertTrue。
+
+通俗地说，assertTrue 方法，就是验证某个表达式的返回值是不是 True。
+
+是 True，则继续执行后面的代码，不是 True，则中止执行所在的测试方法，但不会中止整个测试。
+
+代码示例：
+```
+@Test
+void test_case1() {
+    System.out.println("你好1");
+    assumeTrue(1 > 2);
+    System.out.println("aaa");
+}
+
+@Test
+void test_case2() {
+    System.out.println("你好2");
+    assumeTrue(1 < 2, "假设成立");
+    System.out.println("aaa");
+}
+```
+
+idea 中执行之后的结果：
+[![p9ZFBsP.png](https://s1.ax1x.com/2023/04/22/p9ZFBsP.png)](https://imgse.com/i/p9ZFBsP)
+
+
+## assumingThat(boolean assumption, Executable executable)
+
+此方法用于验证表达式是否成立，成立则执行 Executable 函数式接口的实现对象。
+
+成立和不成立都不会影响此方法后面的代码执行，更不会影响整个测试过程。
+
+代码示例：
+```
+@Test
+    void test_case1() {
+        System.out.println("你好1");
+        assumingThat(false, () -> System.out.println("哈哈哈"));
+        System.out.println("aaa");
+    }
+
+    @Test
+    void test_case2() {
+        System.out.println("你好2");
+        assumingThat(true, () -> System.out.println("哈哈哈"));
+        System.out.println("aaa");
+    }
+```
+
+idea 中执行结果如下：
+[![p9Zkfte.png](https://s1.ax1x.com/2023/04/22/p9Zkfte.png)](https://imgse.com/i/p9Zkfte)
+
+
+
+# 5. 注解
+## 5.1 禁用测试 @Disabled
+
+此注解用于禁用测试类或测试方法，即被注解的类或方法不会执行。
+
+- 禁用测试方法
+```
+public class TestDemo {
+
+    @BeforeAll
+    static void setup() {
+        System.out.println("初始化测试环境");
+    }
+
+    @Test
+    void testCase1() {
+        System.out.println("执行用例1");
+        assertEquals(1+1, 2);
+    }
+
+    @Test
+    @Disabled  // testCase2 被禁用，不会执行
+    void testCase2() {
+        System.out.println("执行用例2 —— 被禁用，不会执行");
+        assertEquals(2+2, 4);
+    }
+
+    @AfterAll
+    static void teardown() {
+        System.out.println("清理测试环境");
+    }
+}
+```
+
+执行结果：
+```
+...
+初始化测试环境
+执行用例1
+清理测试环境
+...
+```
+
+- 禁用测试类
+```
+// 禁用测试类 —— TestDemo
+@Disabled
+public class TestDemo {
+
+    @BeforeAll
+    static void setup() {
+        System.out.println("初始化测试环境");
+    }
+
+    @Test
+    void testCase1() {
+        System.out.println("执行用例1");
+        assertEquals(1+1, 2);
+    }
+
+    @Test
+    void testCase2() {
+        System.out.println("执行用例2 —— 被禁用，不会执行");
+        assertEquals(2+2, 4);
+    }
+
+    @AfterAll
+    static void teardown() {
+        System.out.println("清理测试环境");
+    }
+}
+
+
+// 测试类 TestDemo2 未被禁用
+class TestDemo2 {
+    @Test
+    void testcase3() {
+        System.out.println("测试用例3");
+    }
+}
+```
+
+执行结果：
+```
+...
+测试用例3
+...
+```
+
+被禁用的测试类或测试方法，在执行的时候，都会被当成跳过执行的用例，Skipped。
+
+```Tests run: 2, Failures: 0, Errors: 0, Skipped: 1```
+
+
+## 5.2 满足条件时执行
+
+- `@EnabledOnOs(MAC)`  -- 如果当前系统为 mac 系统，则执行
+- `@DisabledOnOs({ LINUX, WINDOWS })` -- 如果当前系统为 windows 或 linux，则不执行
+- `@EnabledOnJre(JAVA_8)` -- 如果 jre 版本为 1.8 则执行
+- `@EnabledForJreRange(min = JAVA_9, max = JAVA_11)` -- 指定 jre 版本范围，在指定的范围内才执行
+- 自定义的条件 -- 当满足自定的条件时才会执行/不执行
+
+
+## 5.3 自定义条件来控制测试用例执行或不执行
+
+第一种方式，在同一个测试类中定义用于条件的方法，测试用例是否执行，会根据条件方法的返回值来确定。
+
+如下面的代码中 `customCondition1` 和 `customCondition2` 就是我们定义的条件方法，如果条件方法读起来拗口，可以直接就把它们当成条件。
+
+然后使用 `@EnabledIf()` 注解来进行条件的限制，将我们定义好的条件名称(方法名称)传给这个注解，但是要用`字符串`的形式。
+
+如果条件的返回值为 true，就会执行被注解的测试方法，也就是条件为 true 时才执行测试用例。
+
+如果是 false，则不执行。
+
+```
+public class TestDemo {
+    @Test
+    @EnabledIf("customCondition1")   // 在这个测试方法上使用自定义的条件 customCondition1，这个测试方法将会正确执行
+    void test_case1() {
+        System.out.println("测试用例1");
+    }
+
+
+    @Test
+    @EnabledIf("customCondition2")  // 在这个测试方法上使用自定义的条件 customCondition2，这个测试方法将不会执行
+    void test_case2() {
+        System.out.println("测试用例2");
+    }
+
+    // 这个方法是自定义的条件，返回 true，模拟条件成立
+    boolean customCondition1() {
+        return true;
+    }
+
+    // 这个方法是自定义的条件，返回 false，模拟条件不成立
+    boolean customCondition2() {
+        return false;
+    }
+}
+```
+上面的代码在 idea 中的执行结果如下：
+[![p9ZVHn1.png](https://s1.ax1x.com/2023/04/22/p9ZVHn1.png)](https://imgse.com/i/p9ZVHn1)
+
+
+
+第二种方式，条件方法可以位于测试类(不同类、不同包)之外，在使用时，需要用完全限定名称来引用条件方法，代码示例如下：
+
+```
+// 1.条件方法所在的类
+package study;
+
+public class CustomCondition {
+    
+    // 条件方法1，返回 true
+    static boolean myCondition1() {
+        return true;
+    }
+
+    // 条件方法2，返回 false
+    static boolean myCondition2() {
+        return false;
+    }
+}
+
+
+
+// 2.测试方法所在的类
+public class TestDemo {
+    @Test
+    @EnabledIf("study.CustomCondition#myCondition1")  // 引用另一个 java 文件中的条件方法，从包名一直写到类名
+    void test_case1() {
+        System.out.println("测试用例1");
+    }
+
+
+    @Test
+    @EnabledIf("study.CustomCondition#myCondition2") // 引用另一个 java 文件中的条件方法，从包名一直写到类名
+    void test_case2() {
+        System.out.println("测试用例2");
+    }
+}
+
+```
+
+代码执行之后的结果如下：
+[![p9ZZbvj.png](https://s1.ax1x.com/2023/04/22/p9ZZbvj.png)](https://imgse.com/i/p9ZZbvj)
+
+
+## 5.4 关于自定义条件的总结
+
+- 条件方法必须是 `static` 方法
+- 使用时将条件方法的名称传给 `@EnabledIf()` 和 `@DisabledIf()` 注解
+- 条件方法可以在测试方法内，也可以定义在其他地方，如果定义在测试类之外的其他地方，需要使用完全限定名称来引用
