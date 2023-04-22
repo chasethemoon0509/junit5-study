@@ -5,7 +5,6 @@
 <img src="https://img.shields.io/badge/junit--jupiter-5.9.2-brightgreen"/>
 </p>
 
-<hr>
 
 ## 项目配置
 创建 maven 项目，使用 maven 管理 selenium、junit5 等相关依赖和插件。
